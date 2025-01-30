@@ -196,7 +196,8 @@ const Formulario = () => {
       <button onClick={resetForm} style={{ backgroundColor: "red", color: "white" }}>
         🔄 Redefinir
       </button>
-
+      <br />
+      <br />
       <br />
       <h3>Mensagem PPO</h3>
       <br />
