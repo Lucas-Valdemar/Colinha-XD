@@ -100,7 +100,7 @@ const FormsBase = () => {
   const [copyError, setCopyError] = useState(false);
 
 
-  const handleCopyClick = async () => {
+  const handleCopyClick = async (event: React.MouseEvent) => { // Adicionando o tipo correto
     if (formattedTextRef.current) {
       try {
         await navigator.clipboard.writeText(formattedText);
@@ -111,37 +111,41 @@ const FormsBase = () => {
             formattedTextRef.current.style.borderColor = "white";
           }
         }, 1500);
-    
-        showFloatingMessage("Texto copiado!", event);
+  
+        // Passando o evento correto para showFloatingMessage
+        showFloatingMessage("Texto copiado!", event); 
       } catch (err) {
         console.error("Falha ao copiar:", err);
         setCopyError(true);
-        showFloatingMessage("Falha ao copiar o texto!", event);
+        if (event) { // Verifique se o evento é definido
+          showFloatingMessage("Falha ao copiar o texto!", event);
+        }
       }
     }
   };
-
+  
   const showFloatingMessage = (message: string, event: React.MouseEvent) => {
     if (event) {
-    const x = event.clientX;
-    const y = event.clientY;
+      const x = event.clientX;
+      const y = event.clientY;
   
-    const messageElement = document.createElement("div");
-    messageElement.textContent = message;
-    messageElement.style.position = "absolute";
-    messageElement.style.top = `${y - 30}px`; // Ajuste a posição vertical
-    messageElement.style.left = `${x + 10}px`; // Ajuste a posição horizontal
-    messageElement.style.backgroundColor = "rgba(0, 0, 0, 0.7)"; // Cor de fundo
-    messageElement.style.color = "white"; // Cor do texto
-    messageElement.style.padding = "5px 10px"; // Espaçamento interno
-    messageElement.style.borderRadius = "5px"; // Borda arredondada
-    messageElement.style.zIndex = "9999"; // Garante que a mensagem fique acima de outros elementos
-    document.body.appendChild(messageElement);
+      const messageElement = document.createElement("div");
+      messageElement.textContent = message;
+      messageElement.style.position = "absolute";
+      messageElement.style.top = `${y - 30}px`; // Ajuste a posição vertical
+      messageElement.style.left = `${x + 10}px`; // Ajuste a posição horizontal
+      messageElement.style.backgroundColor = "rgba(0, 0, 0, 0.7)"; // Cor de fundo
+      messageElement.style.color = "white"; // Cor do texto
+      messageElement.style.padding = "5px 10px"; // Espaçamento interno
+      messageElement.style.borderRadius = "5px"; // Borda arredondada
+      messageElement.style.zIndex = "9999"; // Garante que a mensagem fique acima de outros elementos
+      document.body.appendChild(messageElement);
   
-    setTimeout(() => {
-      document.body.removeChild(messageElement);
-    }, 2000); // Tempo de exibição da mensagem
-  }};
+      setTimeout(() => {
+        document.body.removeChild(messageElement);
+      }, 2000); // Tempo de exibição da mensagem
+    }
+  };
   return (
     <div className="flex flex-col" >
       <h2>Dados</h2>
