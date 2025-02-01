@@ -81,11 +81,12 @@ const Formulario = () => {
   } = useGeneratedText();
 
   return (
-    <div>
+    <div className="flex flex-col" >
       <h2>Dados</h2>
-
+    <div className="flex flex-col">
       {formData.senhas.map((senha, index) => (
-        <div key={index} style={{ marginBottom: "10px" }}>
+        <div className="flex flex-col w-full"  key={index} style={{ marginBottom: "10px" }}>
+          <div className="flex justify-between w-full">
           <label>{formData.senhas.length === 1 ? "Senha" : `Senha ${index + 1}`}: </label>
           <input
             type="text"
@@ -93,7 +94,8 @@ const Formulario = () => {
             onChange={(e) => handleSenhaChange(index, e.target.value)}
             className="text-black"
           />
-          <br />
+          </div>
+          <div className="flex items-end">
           <label>{formData.senhas.length === 1 ? "Procedimento" : `Procedimento ${index + 1}`}: </label>
           <input
             type="text"
@@ -101,7 +103,7 @@ const Formulario = () => {
             onChange={(e) => handleProcedimentoChange(index, e.target.value)}
             className="text-black"
           />
-          <br />
+          </div>
           {formData.senhas.length > 1 && (
             <button onClick={() => removeSenhaProcedimento(index)}>❌ Remover</button>
           )}
@@ -109,8 +111,7 @@ const Formulario = () => {
       ))}
 
       <button onClick={addSenhaProcedimento}>➕ Adicionar Senha/Procedimento</button>
-      <br />
-      <br />
+      </div>
       <div>
         <label>Prestador: </label>
         <input
@@ -191,16 +192,14 @@ const Formulario = () => {
         />
       </div>
 
-      <br />
+     
 
       <button onClick={resetForm} style={{ backgroundColor: "red", color: "white" }}>
         🔄 Redefinir
       </button>
-      <br />
-      <br />
-      <br />
+     
       <h3>Mensagem PPO</h3>
-      <br />
+      
       <p>{formattedText}</p>
     </div>
   );
