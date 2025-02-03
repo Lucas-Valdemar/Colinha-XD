@@ -24,12 +24,12 @@ const PopupWarning = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center">
-        <h2 className="text-lg font-bold">Aviso</h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-40" >
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center" >
+        <h2 className="text-lg font-bold text-red-900">Aviso</h2>
         <p className="mt-2 text-sm text-gray-700">
-          Este site está em fase de testes. Qualquer conteúdo copiado daqui deve
-          ser verificado antes de ser enviado ao cliente.
+          Este site está em desenvolvimento. Qualquer conteúdo copiado daqui deve
+          ser verificado antes de ser enviado ao beneficiário.
         </p>
         <button
           className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"

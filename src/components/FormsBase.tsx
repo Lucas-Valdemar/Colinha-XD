@@ -63,9 +63,9 @@ const useGeneratedText = () => {
     setFormData(initialState);
   };
 
-  const formattedText = `PREZADO SR(A) [_NM_BENEFICIARIO_] SOLICITAÇÃO DE ${formData.procedimentos.join(" / ") || "insiraprocedimento"}
-AUTORIZADA POR SENHA: ${formData.senhas.join(" / ") || "*insirasenha*"} E NÚMERO DE PROTOCOLO: [NU_PROTOCOLO] PARA PRESTADOR: ${formData.prestador.prestNome || "insiraprestador"}
-ENDEREÇO: ${formData.prestador.prestEndereco || "insiraendereco"}, NÚMERO ${formData.prestador.prestNumero || "insiranumero"} ${formData.prestador.prestComplemento ? ", " + formData.prestador.prestComplemento : ""}, ${formData.prestador.prestBairro || "insirabairro"}, CEP ${formData.prestador.prestCEP || "insiracep"}.
+  const formattedText = `PREZADO SR(A) [_NM_BENEFICIARIO_] SOLICITAÇÃO DE ${formData.procedimentos.join(" / ") || ""}
+AUTORIZADA POR SENHA: ${formData.senhas.join(" / ") || ""} E NÚMERO DE PROTOCOLO: [NU_PROTOCOLO] PARA PRESTADOR: ${formData.prestador.prestNome || ""}
+ENDEREÇO: ${formData.prestador.prestEndereco || ""}, N -  ${formData.prestador.prestNumero || ""} ${formData.prestador.prestComplemento ? ", " + formData.prestador.prestComplemento : ""}, ${formData.prestador.prestBairro || ""}, CEP ${formData.prestador.prestCEP || ""}.
 TELEFONE: ${formData.prestador.telefone1 || "insiratelefone"}${formData.prestador.telefone2 ? " / " + formData.prestador.telefone2 : ""}${formData.prestador.telefone3 ? " / " + formData.prestador.telefone3 : ""}.
 EM CASO DE DÚVIDAS, ENTRE EM CONTATO COM A CENTRAL DE ATENDIMENTO 4090 1740 OU 0800 409 1740. 0800 463 4648`
   .replace(/\n/g, ' ')  // Remove as quebras de linha
