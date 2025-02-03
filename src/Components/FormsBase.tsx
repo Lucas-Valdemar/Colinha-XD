@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import SenProcModule from "@/Components/FormsComponents/SenProcModule";
-import PrestModule from "@/Components/FormsComponents/PrestModule";
+import SenProcModule from "@/components/FormsComponents/SenProcModule";
+import PrestModule from "@/components/FormsComponents/PrestModule";
 
 const useGeneratedText = () => {
   const initialState = {

@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import React from "react";
-import InputDefault from "@/Components/InputDefault";
-import FormsBase from "@/Components/FormsBase";
-import PopupWarning from "@/Components/PopupWarning";
+import InputDefault from "@/components/InputDefault";
+import FormsBase from "@/components/FormsBase";
+import PopupWarning from "@/components/PopupWarning";
 
 export default function Home() {
 
