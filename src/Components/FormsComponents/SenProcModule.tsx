@@ -20,23 +20,25 @@ const SenProcModule: React.FC<SenProcModuleProps> = ({
   onRemove,
 }) => {
   return (
-    <div className="flex flex-col w-full" style={{ marginBottom: "20px" }}>
-      <div className="flex flex-col">
+    <div className="flex flex-col w-full gap-4" style={{ marginBottom: "10px" }}>
+      <div className="flex justify-between">
         <label>{total === 1 ? "Senha" : `Senha ${index + 1}`}:</label>
         <input
           type="text"
           value={senha}
           onChange={(e) => onSenhaChange(index, e.target.value)}
           className="text-black"
+          style={{ width: "65%" }}
         />
       </div>
-      <div className="flex flex-col">
+      <div className="flex justify-between">
         <label>{total === 1 ? "Procedimento" : `Procedimento ${index + 1}`}:</label>
         <input
           type="text"
           value={procedimento}
           onChange={(e) => onProcedimentoChange(index, e.target.value)}
           className="text-black"
+          style={{ width: "65%" }}
         />
       </div>
       {total > 1 && (

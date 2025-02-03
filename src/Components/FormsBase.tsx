@@ -148,7 +148,7 @@ const FormsBase = () => {
   };
   return (
     <div className="flex flex-col" >
-      <h2>Dados</h2>
+      <h2 style={{marginBottom: "10px"}}>FORMULÁRIOS DE DADOS</h2>
     <div className="flex flex-col">
     
  
@@ -166,7 +166,7 @@ const FormsBase = () => {
 ))}
 
 
-      <button style={{ marginBottom: "20px" }} onClick={addSenhaProcedimento}>➕ Adicionar Senha/Procedimento</button>
+      <button style={{ marginBottom: "10px" }} onClick={addSenhaProcedimento}>➕ Adicionar Senha/Procedimento</button>
       </div>
       <PrestModule
   value={formData.prestador}
@@ -178,7 +178,7 @@ const FormsBase = () => {
 
      
 
-      <button onClick={resetForm} style={{ backgroundColor: "red", color: "white" }}>
+      <button onClick={resetForm} style={{ backgroundColor: "red", color: "white" , marginTop: "20px"}}>
         🔄 Redefinir
       </button>
      
