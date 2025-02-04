@@ -5,21 +5,34 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --input-bg: #f3f4f6;
+  --input-text: #111827;
+  --input-border: solid 2px red;
+  --message-border: solid 2px red;
+}
+.dark {
+  --input-bg: red;
+  --input-border: "none";
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --input-bg: #f3f4f6;
+  --message-border: solid 2px white
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
-
 input {
-  color: black !important;
+  border: solid 2px red;
+  border-radius: 8px;
+  background-color: var(--input-bg);
 }
+.copied {
+  border-color: green !important;
+  transition: border-color 0.3s ease;
+}
+

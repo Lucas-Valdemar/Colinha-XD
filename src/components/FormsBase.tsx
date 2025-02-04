@@ -65,8 +65,8 @@ const useGeneratedText = () => {
 
   const formattedText = `PREZADO SR(A) [_NM_BENEFICIARIO_] SOLICITAÇÃO DE ${formData.procedimentos.join(" / ") || ""}
 AUTORIZADA POR SENHA: ${formData.senhas.join(" / ") || ""} E NÚMERO DE PROTOCOLO: [NU_PROTOCOLO] PARA PRESTADOR: ${formData.prestador.prestNome || ""}
-ENDEREÇO: ${formData.prestador.prestEndereco || ""}, N -  ${formData.prestador.prestNumero || ""} ${formData.prestador.prestComplemento ? ", " + formData.prestador.prestComplemento : ""}, ${formData.prestador.prestBairro || ""}, CEP ${formData.prestador.prestCEP || ""}.
-TELEFONE: ${formData.prestador.telefone1 || "insiratelefone"}${formData.prestador.telefone2 ? " / " + formData.prestador.telefone2 : ""}${formData.prestador.telefone3 ? " / " + formData.prestador.telefone3 : ""}.
+ ${formData.prestador.prestEndereco ? "ENDEREÇO: " + formData.prestador.prestEndereco : ""}${formData.prestador.prestNumero ? ", N - " + formData.prestador.prestNumero : ""} ${formData.prestador.prestComplemento ? ", " + formData.prestador.prestComplemento : ""}${formData.prestador.prestBairro ? ", "+ formData.prestador.prestBairro : ""}${formData.prestador.prestCEP ? ", CEP: " +formData.prestador.prestCEP : ""}.
+${formData.prestador.telefone1 ? "TELEFONE: " + formData.prestador.telefone1 : ""}${formData.prestador.telefone2 ? " / " + formData.prestador.telefone2 : ""}${formData.prestador.telefone3 ? " / " + formData.prestador.telefone3 : ""}.
 EM CASO DE DÚVIDAS, ENTRE EM CONTATO COM A CENTRAL DE ATENDIMENTO 4090 1740 OU 0800 409 1740. 0800 463 4648`
   .replace(/\n/g, ' ')  // Remove as quebras de linha
   .replace(/\s{2,}/g, ' '); // Substitui múltiplos espaços por um único espaço
@@ -100,24 +100,23 @@ const FormsBase = () => {
   const [copyError, setCopyError] = useState(false);
 
 
-  const handleCopyClick = async (event: React.MouseEvent) => { // Adicionando o tipo correto
+  const handleCopyClick = async (event: React.MouseEvent) => { 
     if (formattedTextRef.current) {
       try {
         await navigator.clipboard.writeText(formattedText);
-        formattedTextRef.current.style.transition = "border-color 0.3s ease";
-        formattedTextRef.current.style.borderColor = "green";
+        formattedTextRef.current.classList.add("copied");
+  
         setTimeout(() => {
           if (formattedTextRef.current) {
-            formattedTextRef.current.style.borderColor = "white";
+            formattedTextRef.current.classList.remove("copied");
           }
         }, 1500);
   
-        // Passando o evento correto para showFloatingMessage
         showFloatingMessage("Texto copiado!", event); 
       } catch (err) {
         console.error("Falha ao copiar:", err);
         setCopyError(true);
-        if (event) { // Verifique se o evento é definido
+        if (event) { 
           showFloatingMessage("Falha ao copiar o texto!", event);
         }
       }
@@ -183,10 +182,10 @@ const FormsBase = () => {
       </button>
      
       <h3 style={{ marginBlock: "20px" }}>Mensagem PPO</h3>
-      <div
+      <div 
         ref={formattedTextRef}
         style={{
-          border: "1px solid white",
+          border: "var(--message-border)",
           borderRadius: "5px",
           padding: "10px",
           cursor: "pointer", // Indica que é clicável
