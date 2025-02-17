@@ -30,33 +30,44 @@ const prestadorDefault: Prestador = {
 };
 
 const PrestModule: React.FC<PrestModuleProps> = ({ value, onChange }) => {
-  const [suggestions, setSuggestions] = useState<Prestador[]>([]);
+  const [allPrestadores, setAllPrestadores] = useState<Prestador[]>([]);
+  const [filteredPrestadores, setFilteredPrestadores] = useState<Prestador[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // Busca todos os prestadores ao iniciar a página
   useEffect(() => {
-    const fetchPrestadores = async () => {
-      if (!value.prestNome.trim()) {
-        setSuggestions([]);
-        setIsDropdownOpen(false);
-        return;
-      }
-
+    const fetchAllPrestadores = async () => {
       try {
-        console.log(`Buscando prestadores para: ${value.prestNome}`);
-        const response = await fetch(`/api/prism_prestadores?q=${value.prestNome}`);
+        console.log("Buscando todos os prestadores...");
+        const response = await fetch("/api/prism_prestadores");
         if (!response.ok) throw new Error("Erro ao buscar prestadores");
 
         const data: Prestador[] = await response.json();
-        setSuggestions(data);
-        setIsDropdownOpen(data.length > 0);
+        setAllPrestadores(data);
+        setFilteredPrestadores(data); // Inicialmente, todos os prestadores são mostrados
       } catch (error) {
         console.error("Erro ao buscar prestadores:", error);
       }
     };
 
-    const delayDebounce = setTimeout(fetchPrestadores, 300);
-    return () => clearTimeout(delayDebounce);
-  }, [value.prestNome]);
+    fetchAllPrestadores();
+  }, []);
+
+  // Filtra localmente quando o nome do prestador muda
+  useEffect(() => {
+    if (!value.prestNome.trim()) {
+      setFilteredPrestadores(allPrestadores);
+      setIsDropdownOpen(false);
+      return;
+    }
+
+    const filtered = allPrestadores.filter((prestador) =>
+      prestador.prestNome.toLowerCase().includes(value.prestNome.toLowerCase())
+    );
+    
+    setFilteredPrestadores(filtered);
+    setIsDropdownOpen(filtered.length > 0);
+  }, [value.prestNome, allPrestadores]);
 
   const handlePrestadorSelection = (selectedPrestador: Prestador) => {
     const mergedPrestador = { ...prestadorDefault, ...selectedPrestador };
@@ -73,12 +84,12 @@ const PrestModule: React.FC<PrestModuleProps> = ({ value, onChange }) => {
           value={value.prestNome}
           onChange={(e) => onChange({ ...value, prestNome: e.target.value })}
           className="text-black w-full"
-          onFocus={() => setIsDropdownOpen(suggestions.length > 0)}
+          onFocus={() => setIsDropdownOpen(filteredPrestadores.length > 0)}
           onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
         />
         {isDropdownOpen && (
           <ul className="absolute left-0 w-full bg-white border border-gray-300 shadow-md max-h-24 overflow-y-auto z-10 text-black">
-            {suggestions.map((prestador, index) => (
+            {filteredPrestadores.map((prestador, index) => (
               <li
                 key={index}
                 className="p-2 cursor-pointer hover:bg-gray-200"
