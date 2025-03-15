@@ -64,13 +64,13 @@ const useGeneratedText = () => {
   };
 
   const formattedText = `PREZADO SR(A) [_NM_BENEFICIARIO_] SOLICITAÇÃO DE ${formData.procedimentos.join(" / ") || ""}
-AUTORIZADA POR SENHA: ${formData.senhas.join(" / ") || ""} E NÚMERO DE PROTOCOLO: [NU_PROTOCOLO] PARA PRESTADOR: ${formData.prestador.prestNome || ""}
+AUTORIZADA POR SENHA: ${formData.senhas.join(" / ") || ""} E NÚMERO DE PROTOCOLO: [_NU_PROTOCOLO_] PARA PRESTADOR: ${formData.prestador.prestNome || ""}
  ${formData.prestador.prestEndereco ? "ENDEREÇO: " + formData.prestador.prestEndereco : ""}${formData.prestador.prestNumero ? ", N - " + formData.prestador.prestNumero : ""} ${formData.prestador.prestComplemento ? ", " + formData.prestador.prestComplemento : ""}${formData.prestador.prestBairro ? ", "+ formData.prestador.prestBairro : ""}${formData.prestador.prestCEP ? ", CEP: " +formData.prestador.prestCEP : ""}.
 ${formData.prestador.telefone1 ? "TELEFONE: " + formData.prestador.telefone1 : ""}${formData.prestador.telefone2 ? " / " + formData.prestador.telefone2 : ""}${formData.prestador.telefone3 ? " / " + formData.prestador.telefone3 : ""}.
 EM CASO DE DÚVIDAS, ENTRE EM CONTATO COM A CENTRAL DE ATENDIMENTO 4090 1740 OU 0800 409 1740. 0800 463 4648`
   .replace(/\n/g, ' ')  // Remove as quebras de linha
-  .replace(/\s{2,}/g, ' '); // Substitui múltiplos espaços por um único espaço
-
+  .replace(/\s{2,}/g, ' ') // Substitui múltiplos espaços por um único espaço
+  .toUpperCase(); // Converte para maiúsculas
   return {
     formData,
     handleSenhaChange,

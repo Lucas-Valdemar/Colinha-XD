@@ -39,7 +39,8 @@ const PrestModule: React.FC<PrestModuleProps> = ({ value, onChange }) => {
     const fetchAllPrestadores = async () => {
       try {
         console.log("Buscando todos os prestadores...");
-        const response = await fetch("/api/prism_prestadores");
+        const response = await fetch("/api/next-prestadores");
+        // const response = await fetch("/api/prism_prestadores");
         if (!response.ok) throw new Error("Erro ao buscar prestadores");
 
         const data: Prestador[] = await response.json();
