@@ -1,7 +1,8 @@
 "use client";
+const loadPdfjs = async () => {
+  const pdfjsLib = await import("pdfjs-dist/build/pdf");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+  return pdfjsLib;
+};
 
-import * as pdfjsLib from 'pdfjs-dist/build/pdf';
-// @ts-ignore: Pode não ter tipos declarados corretamente
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
-
-export default pdfjsLib;
+export default loadPdfjs;

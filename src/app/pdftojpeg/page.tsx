@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { saveAs } from 'file-saver';
-import pdfjsLib from './pdfjs-setup-client';
+import loadPdfjs from './pdfjs-setup-client';
 import PopupWarning from '@/components/PopupWarning';
 
 const IndexPage = () => {
@@ -10,7 +10,7 @@ const IndexPage = () => {
     const [pdfFile, setPdfFile] = useState<File | null>(null);
       const [password, setPassword] = useState("");
       const [authorized, setAuthorized] = useState(false);
-
+    const [pdfjsLib, setPdfjsLib] = useState<any>(null);
 
 
     const handlePdfChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,21 +68,16 @@ const IndexPage = () => {
 
                     await page.render(renderContext).promise;
 
-                    canvas.toBlob(async (blob) => {
-                        if (blob) {
-                            // Salvar diretamente no diretório usando a File System Access API
-                            try {
-                                const fileHandle = await directoryHandle.getFileHandle(`page_${i}.jpg`, { create: true });
-                                const writable = await fileHandle.createWritable();
-                                await writable.write(blob);
-                                await writable.close();
-                                console.log(`Imagem page_${i}.jpg salva no diretório.`);
-                            } catch (error) {
-                                console.error('Erro ao salvar no diretório:', error);
-                                alert('Erro ao salvar no diretório.');
-                            }
-                        }
-                    }, 'image/jpeg');
+                    const blob = await new Promise<Blob | null>((resolve) =>
+                      canvas.toBlob(resolve, 'image/jpeg')
+                    );
+                    if (blob) {
+                      const fileHandle = await directoryHandle.getFileHandle(`page_${i}.jpg`, { create: true });
+                      const writable = await fileHandle.createWritable();
+                      await writable.write(blob);
+                      await writable.close();
+                      console.log(`Imagem page_${i}.jpg salva no diretório.`);
+                    }
                 } else {
                     console.error(`Falha ao obter o contexto 2D do canvas para a página ${i}.`);
                 }
