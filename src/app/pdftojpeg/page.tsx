@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { saveAs } from 'file-saver';
 import loadPdfjs from './pdfjs-setup-client';
+import pdfjsLib from './pdfjs-setup-client';
 import PopupWarning from '@/components/PopupWarning';
 
 const IndexPage = () => {
@@ -10,7 +11,6 @@ const IndexPage = () => {
     const [pdfFile, setPdfFile] = useState<File | null>(null);
       const [password, setPassword] = useState("");
       const [authorized, setAuthorized] = useState(false);
-    const [pdfjsLib, setPdfjsLib] = useState<any>(null);
 
 
     const handlePdfChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,54 +37,63 @@ const IndexPage = () => {
     };
 
     const convertPdfToImages = async () => {
-        console.log('Iniciando conversão...');
-        console.log('PDF file:', pdfFile);
-        console.log('Directory handle:', directoryHandle);
-
-        if (!pdfFile || !directoryHandle) {
-            alert('Selecione um PDF e um local de salvamento.');
-            return;
-        }
-
-        const fileReader = new FileReader();
-        fileReader.onload = async () => {
-            const typedArray = new Uint8Array(fileReader.result as ArrayBuffer);
-            const pdf = await pdfjsLib.getDocument(typedArray).promise;
-
-            for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const viewport = page.getViewport({ scale: 1.5 });
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-
-                if (context) {
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    const renderContext = {
-                        canvasContext: context,
-                        viewport: viewport,
-                    };
-
-                    await page.render(renderContext).promise;
-
-                    const blob = await new Promise<Blob | null>((resolve) =>
+      console.log('Iniciando conversão...');
+      console.log('PDF file:', pdfFile);
+      console.log('Directory handle:', directoryHandle);
+  
+      if (!pdfFile || !directoryHandle) {
+          alert('Selecione um PDF e um local de salvamento.');
+          return;
+      }
+  
+      // Carrega o PDF.js dinamicamente no navegador
+      const loadedPdfjs = await pdfjsLib;
+  
+      if (!loadedPdfjs) {
+          console.error("Falha ao carregar pdfjsLib.");
+          alert("Não foi possível carregar o conversor de PDF.");
+          return;
+      }
+  
+      const fileReader = new FileReader();
+      fileReader.onload = async () => {
+          const typedArray = new Uint8Array(fileReader.result as ArrayBuffer);
+          const pdf = await loadedPdfjs.getDocument(typedArray).promise;
+  
+          for (let i = 1; i <= pdf.numPages; i++) {
+              const page = await pdf.getPage(i);
+              const viewport = page.getViewport({ scale: 1.5 });
+              const canvas = document.createElement('canvas');
+              const context = canvas.getContext('2d');
+  
+              if (context) {
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+  
+                  const renderContext = {
+                      canvasContext: context,
+                      viewport: viewport,
+                  };
+  
+                  await page.render(renderContext).promise;
+  
+                  const blob = await new Promise<Blob | null>((resolve) =>
                       canvas.toBlob(resolve, 'image/jpeg')
-                    );
-                    if (blob) {
+                  );
+                  if (blob) {
                       const fileHandle = await directoryHandle.getFileHandle(`page_${i}.jpg`, { create: true });
                       const writable = await fileHandle.createWritable();
                       await writable.write(blob);
                       await writable.close();
                       console.log(`Imagem page_${i}.jpg salva no diretório.`);
-                    }
-                } else {
-                    console.error(`Falha ao obter o contexto 2D do canvas para a página ${i}.`);
-                }
-            }
-        };
-        fileReader.readAsArrayBuffer(pdfFile);
-    };
+                  }
+              } else {
+                  console.error(`Falha ao obter o contexto 2D do canvas para a página ${i}.`);
+              }
+          }
+      };
+      fileReader.readAsArrayBuffer(pdfFile);
+  };
 
     useEffect(() => {
         // Recupera a senha salva localmente
